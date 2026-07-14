@@ -8,7 +8,7 @@ import Analytics from './components/Analytics'
 function App() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-6">
-      <h1 className="text-center text-lg font-bold text-aws-orange mb-4">
+      <h1 className="text-center text-xl font-bold text-aws-orange mb-5">
         AWS Cloud Practitioner 学習アプリ
       </h1>
 
@@ -24,7 +24,7 @@ function App() {
             key={to}
             to={to}
             className={({ isActive }) =>
-              `px-3 py-1.5 rounded text-xs font-medium transition ${
+              `px-4 py-2 rounded text-sm font-medium transition ${
                 isActive
                   ? 'bg-emerald-500 text-white'
                   : 'bg-aws-blue text-gray-200 hover:bg-opacity-80'

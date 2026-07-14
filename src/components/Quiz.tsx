@@ -34,7 +34,6 @@ export default function Quiz() {
       const idx = Math.floor(Math.random() * others.length)
       picks.push(others.splice(idx, 1)[0])
     }
-    // Shuffle
     for (let i = picks.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1))
       ;[picks[i], picks[j]] = [picks[j], picks[i]]
@@ -59,7 +58,7 @@ export default function Quiz() {
   if (!card) return <div className="text-center text-gray-400">カードがありません</div>
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* コントロール */}
       <div className="flex gap-2">
         <select
@@ -70,7 +69,7 @@ export default function Quiz() {
             setSelected(null)
             setAnswered(false)
           }}
-          className="flex-1 bg-aws-blue border border-gray-600 rounded px-2 py-1.5 text-xs text-gray-200"
+          className="flex-1 bg-aws-blue border border-gray-600 rounded px-3 py-2 text-sm text-gray-200"
         >
           <option value="all">全Module</option>
           {MODULES.map((m) => (
@@ -85,7 +84,7 @@ export default function Quiz() {
             setSelected(null)
             setAnswered(false)
           }}
-          className="bg-aws-blue border border-gray-600 rounded px-2 py-1.5 text-xs text-gray-200"
+          className="bg-aws-blue border border-gray-600 rounded px-3 py-2 text-sm text-gray-200"
         >
           <option value="desc-to-title">説明→サービス名</option>
           <option value="title-to-desc">サービス名→説明</option>
@@ -93,14 +92,14 @@ export default function Quiz() {
       </div>
 
       {/* 進捗 */}
-      <div className="text-center text-[11px] text-gray-400">
+      <div className="text-center text-sm text-gray-400">
         {currentIndex + 1} / {filteredCards.length}
       </div>
 
       {/* 問題 */}
-      <div className="bg-gradient-to-br from-aws-blue to-aws-navy border border-blue-800 rounded-xl p-4 text-center">
-        <div className="text-[10px] text-aws-orange mb-2">{card.module}</div>
-        <div className="text-xs leading-relaxed">
+      <div className="bg-gradient-to-br from-aws-blue to-aws-navy border border-blue-800 rounded-xl p-5 text-center">
+        <div className="text-xs text-aws-orange mb-2">{card.module}</div>
+        <div className="text-sm leading-relaxed">
           {mode === 'desc-to-title'
             ? `「${card.description}」に該当するサービスは？`
             : `「${card.title}」の説明はどれですか？`}
@@ -123,7 +122,7 @@ export default function Quiz() {
               key={choice.id}
               onClick={() => handleSelect(choice.id)}
               disabled={answered}
-              className={`w-full text-left px-3 py-2 border rounded-lg text-xs transition ${btnClass} disabled:cursor-default`}
+              className={`w-full text-left px-4 py-3 border rounded-lg text-sm transition ${btnClass} disabled:cursor-default`}
             >
               {mode === 'desc-to-title' ? choice.title : choice.description}
             </button>
@@ -134,7 +133,7 @@ export default function Quiz() {
       {/* 結果 */}
       {answered && (
         <div
-          className={`text-center text-xs p-2 rounded ${
+          className={`text-center text-sm p-3 rounded ${
             selected === card.id
               ? 'bg-emerald-900/40 text-emerald-300'
               : 'bg-red-900/40 text-red-300'
@@ -150,7 +149,7 @@ export default function Quiz() {
       <div className="text-center">
         <button
           onClick={handleNext}
-          className="px-4 py-1.5 bg-aws-orange text-aws-navy rounded text-xs font-bold hover:bg-yellow-500"
+          className="px-5 py-2 bg-aws-orange text-aws-navy rounded text-sm font-bold hover:bg-yellow-500"
         >
           次の問題 ▶
         </button>

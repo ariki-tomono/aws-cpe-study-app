@@ -13,7 +13,6 @@ export default function FlashCard() {
       moduleFilter === 'all'
         ? [...CARDS]
         : CARDS.filter((c) => c.module === moduleFilter)
-    // Shuffle
     for (let i = cards.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1))
       ;[cards[i], cards[j]] = [cards[j], cards[i]]
@@ -46,7 +45,7 @@ export default function FlashCard() {
   if (!card) return <div className="text-center text-gray-400">カードがありません</div>
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* フィルター */}
       <select
         value={moduleFilter}
@@ -55,7 +54,7 @@ export default function FlashCard() {
           setCurrentIndex(0)
           setIsFlipped(false)
         }}
-        className="w-full bg-aws-blue border border-gray-600 rounded px-3 py-1.5 text-xs text-gray-200"
+        className="w-full bg-aws-blue border border-gray-600 rounded px-3 py-2 text-sm text-gray-200"
       >
         <option value="all">全Module</option>
         {MODULES.map((m) => (
@@ -64,7 +63,7 @@ export default function FlashCard() {
       </select>
 
       {/* 進捗 */}
-      <div className="text-center text-[11px] text-gray-400">
+      <div className="text-center text-sm text-gray-400">
         {currentIndex + 1} / {filteredCards.length}
         {progress && progress.repetitions > 0 && (
           <span className="ml-2 text-emerald-400">
@@ -79,28 +78,28 @@ export default function FlashCard() {
         onClick={() => setIsFlipped(!isFlipped)}
       >
         <div
-          className={`relative w-full min-h-[200px] transition-transform duration-500 transform-style-3d ${
+          className={`relative w-full min-h-[240px] transition-transform duration-500 transform-style-3d ${
             isFlipped ? '[transform:rotateY(180deg)]' : ''
           }`}
         >
           {/* 表面 */}
-          <div className="absolute inset-0 backface-hidden bg-gradient-to-br from-aws-blue to-aws-navy border border-blue-800 rounded-xl p-5 flex flex-col justify-center items-center text-center">
-            <div className="text-[10px] text-aws-orange mb-2">
+          <div className="absolute inset-0 backface-hidden bg-gradient-to-br from-aws-blue to-aws-navy border border-blue-800 rounded-xl p-6 flex flex-col justify-center items-center text-center">
+            <div className="text-xs text-aws-orange mb-3">
               {card.module}
             </div>
-            <div className="text-sm font-bold">{card.title}</div>
-            <div className="text-[10px] text-gray-500 mt-3">
+            <div className="text-base font-bold">{card.title}</div>
+            <div className="text-xs text-gray-500 mt-4">
               クリックで説明を表示
             </div>
           </div>
 
           {/* 裏面 */}
-          <div className="absolute inset-0 backface-hidden [transform:rotateY(180deg)] bg-gradient-to-br from-emerald-900/50 to-aws-navy border border-emerald-800 rounded-xl p-5 flex flex-col justify-center items-center text-center">
-            <div className="text-[10px] text-aws-orange mb-2">
+          <div className="absolute inset-0 backface-hidden [transform:rotateY(180deg)] bg-gradient-to-br from-emerald-900/50 to-aws-navy border border-emerald-800 rounded-xl p-6 flex flex-col justify-center items-center text-center">
+            <div className="text-xs text-aws-orange mb-3">
               {card.module}
             </div>
-            <div className="text-xs font-bold mb-2">{card.title}</div>
-            <div className="text-xs text-gray-300 leading-relaxed">
+            <div className="text-sm font-bold mb-3">{card.title}</div>
+            <div className="text-sm text-gray-300 leading-relaxed">
               {card.description}
             </div>
           </div>
@@ -108,34 +107,34 @@ export default function FlashCard() {
       </div>
 
       {/* ナビゲーション */}
-      <div className="flex justify-center gap-2">
+      <div className="flex justify-center gap-2 flex-wrap">
         <button
           onClick={handlePrev}
-          className="px-3 py-1.5 bg-aws-blue border border-gray-600 rounded text-xs hover:bg-opacity-80"
+          className="px-4 py-2 bg-aws-blue border border-gray-600 rounded text-sm hover:bg-opacity-80"
         >
           ◀ 前へ
         </button>
         <button
           onClick={() => handleRate(1)}
-          className="px-3 py-1.5 bg-red-900/50 border border-red-700 rounded text-xs hover:bg-red-800/50"
+          className="px-4 py-2 bg-red-900/50 border border-red-700 rounded text-sm hover:bg-red-800/50"
         >
           ✗ 忘れた
         </button>
         <button
           onClick={() => handleRate(3)}
-          className="px-3 py-1.5 bg-yellow-900/50 border border-yellow-700 rounded text-xs hover:bg-yellow-800/50"
+          className="px-4 py-2 bg-yellow-900/50 border border-yellow-700 rounded text-sm hover:bg-yellow-800/50"
         >
           △ 曖昧
         </button>
         <button
           onClick={() => handleRate(5)}
-          className="px-3 py-1.5 bg-emerald-900/50 border border-emerald-700 rounded text-xs hover:bg-emerald-800/50"
+          className="px-4 py-2 bg-emerald-900/50 border border-emerald-700 rounded text-sm hover:bg-emerald-800/50"
         >
           ✓ 覚えた
         </button>
         <button
           onClick={handleNext}
-          className="px-3 py-1.5 bg-aws-blue border border-gray-600 rounded text-xs hover:bg-opacity-80"
+          className="px-4 py-2 bg-aws-blue border border-gray-600 rounded text-sm hover:bg-opacity-80"
         >
           次へ ▶
         </button>

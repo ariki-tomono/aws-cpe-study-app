@@ -9,7 +9,6 @@ import { useStudyStore } from '../stores/useStudyStore'
 export default function Analytics() {
   const { progress, dailyRecords, quizHistory, resetProgress } = useStudyStore()
 
-  // 日別学習データ（直近7日）
   const dailyData = useMemo(() => {
     const last7 = []
     for (let i = 6; i >= 0; i--) {
@@ -26,7 +25,6 @@ export default function Analytics() {
     return last7
   }, [dailyRecords])
 
-  // Module別正答率（レーダーチャート用）
   const radarData = useMemo(() => {
     return MODULES.map((mod) => {
       const moduleCards = CARDS.filter((c) => c.module === mod)
@@ -35,12 +33,11 @@ export default function Analytics() {
       const correct = results.filter((r) => r.correct).length
       const total = results.length
       const rate = total > 0 ? Math.round((correct / total) * 100) : 0
-      const shortName = mod.replace(/Module \d+: /, '').slice(0, 10)
+      const shortName = mod.replace(/Module \d+: /, '').slice(0, 12)
       return { module: shortName, rate }
     })
   }, [quizHistory])
 
-  // 苦手カードTop10
   const weakCards = useMemo(() => {
     return Object.values(progress)
       .filter((p) => p.incorrectCount > 0)
@@ -64,51 +61,51 @@ export default function Analytics() {
   const overallRate = totalAnswered > 0 ? Math.round((totalCorrect / totalAnswered) * 100) : 0
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       {/* 全体統計 */}
-      <div className="grid grid-cols-3 gap-2">
-        <div className="bg-aws-blue/50 rounded p-2 text-center">
-          <div className="text-base font-bold text-emerald-400">{totalAnswered}</div>
-          <div className="text-[10px] text-gray-400">回答数</div>
+      <div className="grid grid-cols-3 gap-3">
+        <div className="bg-aws-blue/50 rounded-lg p-3 text-center">
+          <div className="text-xl font-bold text-emerald-400">{totalAnswered}</div>
+          <div className="text-xs text-gray-400">回答数</div>
         </div>
-        <div className="bg-aws-blue/50 rounded p-2 text-center">
-          <div className="text-base font-bold text-emerald-400">{overallRate}%</div>
-          <div className="text-[10px] text-gray-400">正答率</div>
+        <div className="bg-aws-blue/50 rounded-lg p-3 text-center">
+          <div className="text-xl font-bold text-emerald-400">{overallRate}%</div>
+          <div className="text-xs text-gray-400">正答率</div>
         </div>
-        <div className="bg-aws-blue/50 rounded p-2 text-center">
-          <div className="text-base font-bold text-emerald-400">
+        <div className="bg-aws-blue/50 rounded-lg p-3 text-center">
+          <div className="text-xl font-bold text-emerald-400">
             {Object.values(progress).filter((p) => p.repetitions >= 3).length}
           </div>
-          <div className="text-[10px] text-gray-400">習得済み</div>
+          <div className="text-xs text-gray-400">習得済み</div>
         </div>
       </div>
 
       {/* 日別学習グラフ */}
-      <div className="bg-aws-blue/30 rounded-lg p-3">
-        <h3 className="text-[11px] font-semibold text-aws-orange mb-2">
+      <div className="bg-aws-blue/30 rounded-lg p-4">
+        <h3 className="text-sm font-semibold text-aws-orange mb-3">
           直近7日間の学習
         </h3>
-        <ResponsiveContainer width="100%" height={120}>
+        <ResponsiveContainer width="100%" height={140}>
           <BarChart data={dailyData}>
-            <XAxis dataKey="date" tick={{ fontSize: 9, fill: '#888' }} />
-            <YAxis tick={{ fontSize: 9, fill: '#888' }} width={25} />
+            <XAxis dataKey="date" tick={{ fontSize: 11, fill: '#888' }} />
+            <YAxis tick={{ fontSize: 11, fill: '#888' }} width={30} />
             <Tooltip
-              contentStyle={{ fontSize: 10, background: '#1a1a2e', border: '1px solid #333' }}
+              contentStyle={{ fontSize: 12, background: '#1a1a2e', border: '1px solid #333' }}
             />
-            <Bar dataKey="cards" fill="#10b981" name="学習カード" radius={[2, 2, 0, 0]} />
+            <Bar dataKey="cards" fill="#10b981" name="学習カード" radius={[3, 3, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </div>
 
       {/* Module別レーダーチャート */}
-      <div className="bg-aws-blue/30 rounded-lg p-3">
-        <h3 className="text-[11px] font-semibold text-aws-orange mb-2">
+      <div className="bg-aws-blue/30 rounded-lg p-4">
+        <h3 className="text-sm font-semibold text-aws-orange mb-3">
           Module別正答率
         </h3>
-        <ResponsiveContainer width="100%" height={200}>
+        <ResponsiveContainer width="100%" height={220}>
           <RadarChart data={radarData}>
             <PolarGrid stroke="#333" />
-            <PolarAngleAxis dataKey="module" tick={{ fontSize: 8, fill: '#aaa' }} />
+            <PolarAngleAxis dataKey="module" tick={{ fontSize: 9, fill: '#aaa' }} />
             <Radar
               dataKey="rate"
               stroke="#ff9900"
@@ -121,17 +118,17 @@ export default function Analytics() {
 
       {/* 苦手カード */}
       {weakCards.length > 0 && (
-        <div className="bg-aws-blue/30 rounded-lg p-3">
-          <h3 className="text-[11px] font-semibold text-aws-orange mb-2">
+        <div className="bg-aws-blue/30 rounded-lg p-4">
+          <h3 className="text-sm font-semibold text-aws-orange mb-3">
             苦手カード Top {weakCards.length}
           </h3>
-          <div className="space-y-1">
+          <div className="space-y-2">
             {weakCards.map((card, i) => (
               <div
                 key={i}
-                className="flex justify-between items-center text-[11px] py-1 border-b border-gray-700/50"
+                className="flex justify-between items-center text-sm py-1.5 border-b border-gray-700/50"
               >
-                <span className="text-gray-300 truncate max-w-[70%]">
+                <span className="text-gray-300 truncate max-w-[75%]">
                   {card.title}
                 </span>
                 <span className="text-red-400 font-mono">{card.rate}%</span>
@@ -149,7 +146,7 @@ export default function Analytics() {
               resetProgress()
             }
           }}
-          className="text-[10px] text-gray-500 hover:text-red-400 underline"
+          className="text-xs text-gray-500 hover:text-red-400 underline"
         >
           学習データをリセット
         </button>

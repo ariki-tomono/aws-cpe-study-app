@@ -3,7 +3,7 @@ import { CARDS, Card } from '../data/cards'
 import { useStudyStore } from '../stores/useStudyStore'
 
 const EXAM_SIZE = 20
-const TIME_LIMIT = 10 * 60 // 10 minutes in seconds
+const TIME_LIMIT = 10 * 60
 
 interface ExamQuestion {
   card: Card
@@ -56,7 +56,6 @@ export default function MockExam() {
 
   const finishExam = () => {
     if (timerRef) clearInterval(timerRef)
-    // Record results
     questions.forEach((q, i) => {
       if (answers[i] !== null) {
         addQuizResult(q.card.id, answers[i] === q.card.id)
@@ -75,17 +74,17 @@ export default function MockExam() {
 
   if (phase === 'start') {
     return (
-      <div className="text-center space-y-4 py-8">
-        <h2 className="text-sm font-bold text-aws-orange">模擬試験</h2>
-        <p className="text-xs text-gray-300">
+      <div className="text-center space-y-5 py-10">
+        <h2 className="text-base font-bold text-aws-orange">模擬試験</h2>
+        <p className="text-sm text-gray-300">
           全Moduleからランダム{EXAM_SIZE}問、制限時間{TIME_LIMIT / 60}分
         </p>
-        <p className="text-[11px] text-gray-400">
+        <p className="text-xs text-gray-400">
           説明文からサービス名を選ぶ4択形式です
         </p>
         <button
           onClick={startExam}
-          className="px-6 py-2 bg-aws-orange text-aws-navy rounded-lg text-xs font-bold hover:bg-yellow-500"
+          className="px-6 py-2.5 bg-aws-orange text-aws-navy rounded-lg text-sm font-bold hover:bg-yellow-500"
         >
           試験開始
         </button>
@@ -96,15 +95,15 @@ export default function MockExam() {
   if (phase === 'result') {
     const percentage = Math.round((score / EXAM_SIZE) * 100)
     return (
-      <div className="space-y-4">
-        <div className="text-center py-4">
-          <h2 className="text-sm font-bold text-aws-orange mb-2">結果</h2>
-          <div className="text-3xl font-bold text-emerald-400">
+      <div className="space-y-5">
+        <div className="text-center py-5">
+          <h2 className="text-base font-bold text-aws-orange mb-3">結果</h2>
+          <div className="text-4xl font-bold text-emerald-400">
             {score} / {EXAM_SIZE}
           </div>
-          <div className="text-xs text-gray-400 mt-1">{percentage}% 正解</div>
+          <div className="text-sm text-gray-400 mt-1">{percentage}% 正解</div>
           <div
-            className={`text-xs mt-2 ${
+            className={`text-sm mt-2 ${
               percentage >= 70 ? 'text-emerald-400' : 'text-red-400'
             }`}
           >
@@ -112,12 +111,11 @@ export default function MockExam() {
           </div>
         </div>
 
-        {/* 問題一覧 */}
         <div className="space-y-2">
           {questions.map((q, i) => (
             <div
               key={i}
-              className={`p-2 rounded text-[11px] border ${
+              className={`p-3 rounded text-sm border ${
                 answers[i] === q.card.id
                   ? 'bg-emerald-900/30 border-emerald-700'
                   : 'bg-red-900/30 border-red-700'
@@ -125,7 +123,7 @@ export default function MockExam() {
             >
               <span className="font-medium">Q{i + 1}:</span> {q.card.title}
               {answers[i] !== q.card.id && (
-                <span className="text-red-300 ml-1">
+                <span className="text-red-300 ml-2 text-xs">
                   (あなたの回答: {questions[i].choices.find(c => c.id === answers[i])?.title || '未回答'})
                 </span>
               )}
@@ -136,7 +134,7 @@ export default function MockExam() {
         <div className="text-center">
           <button
             onClick={() => setPhase('start')}
-            className="px-4 py-1.5 bg-aws-orange text-aws-navy rounded text-xs font-bold"
+            className="px-5 py-2 bg-aws-orange text-aws-navy rounded text-sm font-bold"
           >
             もう一度
           </button>
@@ -145,12 +143,10 @@ export default function MockExam() {
     )
   }
 
-  // Exam phase
   const q = questions[currentQ]
   return (
-    <div className="space-y-3">
-      {/* ヘッダー */}
-      <div className="flex justify-between items-center text-xs">
+    <div className="space-y-4">
+      <div className="flex justify-between items-center text-sm">
         <span className="text-gray-400">
           Q{currentQ + 1} / {EXAM_SIZE}
         </span>
@@ -163,29 +159,26 @@ export default function MockExam() {
         </span>
       </div>
 
-      {/* 進捗バー */}
-      <div className="w-full h-1 bg-gray-700 rounded-full overflow-hidden">
+      <div className="w-full h-1.5 bg-gray-700 rounded-full overflow-hidden">
         <div
           className="h-full bg-aws-orange transition-all"
           style={{ width: `${((currentQ + 1) / EXAM_SIZE) * 100}%` }}
         />
       </div>
 
-      {/* 問題 */}
-      <div className="bg-gradient-to-br from-aws-blue to-aws-navy border border-blue-800 rounded-xl p-4 text-center">
-        <div className="text-[10px] text-aws-orange mb-2">{q.card.module}</div>
-        <div className="text-xs leading-relaxed">
+      <div className="bg-gradient-to-br from-aws-blue to-aws-navy border border-blue-800 rounded-xl p-5 text-center">
+        <div className="text-xs text-aws-orange mb-2">{q.card.module}</div>
+        <div className="text-sm leading-relaxed">
           「{q.card.description}」に該当するサービスは？
         </div>
       </div>
 
-      {/* 選択肢 */}
       <div className="space-y-2">
         {q.choices.map((choice) => (
           <button
             key={choice.id}
             onClick={() => handleAnswer(choice.id)}
-            className={`w-full text-left px-3 py-2 border rounded-lg text-xs transition ${
+            className={`w-full text-left px-4 py-3 border rounded-lg text-sm transition ${
               answers[currentQ] === choice.id
                 ? 'bg-aws-orange/20 border-aws-orange'
                 : 'bg-aws-blue border-gray-600 hover:bg-aws-blue/80'
@@ -196,26 +189,25 @@ export default function MockExam() {
         ))}
       </div>
 
-      {/* ナビゲーション */}
       <div className="flex justify-between">
         <button
           onClick={() => setCurrentQ((q) => Math.max(0, q - 1))}
           disabled={currentQ === 0}
-          className="px-3 py-1.5 bg-aws-blue border border-gray-600 rounded text-xs disabled:opacity-40"
+          className="px-4 py-2 bg-aws-blue border border-gray-600 rounded text-sm disabled:opacity-40"
         >
           ◀ 前へ
         </button>
         {currentQ < EXAM_SIZE - 1 ? (
           <button
             onClick={() => setCurrentQ((q) => q + 1)}
-            className="px-3 py-1.5 bg-aws-blue border border-gray-600 rounded text-xs"
+            className="px-4 py-2 bg-aws-blue border border-gray-600 rounded text-sm"
           >
             次へ ▶
           </button>
         ) : (
           <button
             onClick={finishExam}
-            className="px-4 py-1.5 bg-aws-orange text-aws-navy rounded text-xs font-bold"
+            className="px-5 py-2 bg-aws-orange text-aws-navy rounded text-sm font-bold"
           >
             提出する
           </button>
