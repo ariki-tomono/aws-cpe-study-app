@@ -38,3 +38,31 @@ npm run build
 
 - ブラウザのlocalStorageに保存されます
 - 分析画面からリセット可能です
+
+## GitHub Pages デプロイ手順
+
+公開URL: https://ariki-tomono.github.io/aws-cpe-study-app/
+
+### 初回セットアップ（実施済み）
+
+1. `vite.config.ts` に `base: '/aws-cpe-study-app/'` を追加
+2. `src/main.tsx` の `BrowserRouter` を `HashRouter` に変更（GitHub Pagesは静的ホスティングのため）
+3. `gh-pages` パッケージをインストール：`npm install -D gh-pages`
+4. `package.json` の scripts に `"deploy": "gh-pages -d dist"` を追加
+5. GitHubのリポジトリをパブリックに変更（GitHub Freeではプライベートリポジトリに Pages を使えないため）
+6. GitHub Settings → Pages → Source: 「Deploy from a branch」、Branch: `gh-pages` / `/ (root)` を選択して Save
+
+### 更新時の手順
+
+コードを修正した後、以下を実行するとGitHub Pagesに反映されます：
+
+```bash
+npm run build
+npm run deploy
+```
+
+### 注意事項
+
+- `npm run deploy` は `gh-pages` ブランチに dist/ の内容をプッシュします。mainブランチのソースコードには影響しません
+- ソースコードの変更はmainブランチに別途コミット・プッシュしてください
+- デプロイ後、反映まで数分かかることがあります
